@@ -1,0 +1,126 @@
+* {
+  border: none;
+  border-radius: 0;
+  font-family: "JetBrainsMono Nerd Font", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  min-height: 10px;
+} 
+
+@import "themes/Tokyo-Night.css";
+
+window#waybar {
+  background: @bar-bg;
+  margin: 10px;
+}
+
+tooltip {
+  background: @main-bg;
+  color: @main-fg;
+  border-radius: 7px;
+  border-width: 0;
+}
+
+tooltip label {
+  color: @main-fg;
+}
+
+#workspaces button {
+  box-shadow: none;
+  text-shadow: none;
+  padding: 0;
+  background: transparent;
+  margin: 5px 0 5px 0;
+  padding: 0 3px 0 3px;
+  color: @main-fg;
+}
+
+#workspaces button.active {
+  color: @wb-active-fg;
+  /*margin: 0 3px 0 3px;
+  padding: 0 3px 0 3px;*/
+}
+
+#workspaces button:hover {
+  color: @wb-hover-fg;
+}
+
+#taskbar button {
+  box-shadow: none;
+  text-shadow: none;
+  padding: 0;
+  border-radius: 10px;
+  margin: 3px 0 3px 0;
+  padding: 0 3px 0 3px;
+  color: @wb-active-fg;
+  animation: gradient_f 20s ease-in infinite;
+  transition: all 0.5s cubic-bezier(.55,-0.68,.48,1.682);
+}
+
+#taskbar button.active {
+  background: @wb-active-bg;
+  color: @wb-active-color;
+  margin: 3px 0 3px 0;
+  padding: 0 3px 0 3px;
+  animation: gradient_f 20s ease-in infinite;
+  transition: all 0.5s cubic-bezier(.55,-0.68,.48,1.682);
+}
+
+#taskbar button.hover {
+  background: @wb-hover-bg;
+  color: @wb-hover-color;
+  padding: 0 3px 0 3px;
+  animation: gradient_f 20s ease-in infinite;
+  transition: all 0.5s cubic-bezier(.55,-0.68,.48,1.682);
+}
+
+#battery,
+#bluetooth,
+#backlight,
+#pulseaudio,
+#clock,
+#cpu,
+#custom-gpuinfo,
+#idle_inhibitor,
+#language,
+#memory,
+#mpris,
+#network,
+#custom-power,
+#pulseaudio,
+#taskbar,
+#tray,
+#window,
+#temperature,
+#workspaces {
+  color: @main-fg;
+  opacity: 1;
+  margin: 4px 5px 4px 5px;
+  padding: 0 4px 0 4px
+}
+
+#custom-chatgpt {
+  margin-left: 10px;
+}
+
+#custom-chatgpt,
+#custom-colloscope {
+  color: @main-fg;
+  padding: 0 4px 0 4px
+}
+
+#workspaces,
+#tray {
+  padding: 0;
+}
+
+#battery.charging {
+  color: #9ECE6A;
+}
+
+#battery.warning:not(.charging) {
+  color: #E0AF68;
+}
+
+#battery.critical:not(.charging) {
+  color: #F7768E;
+}
