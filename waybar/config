@@ -1,18 +1,19 @@
 {
+    // ========== GENERAL CONFIG =========
     // "layer": "top"
     "position": "top",
     // "height": 20, // Waybar height (to be removed for auto height)
-    // "width": 1280, // Waybar width
     "spacing": 4, // Gaps between modules (4px)
-    // Choose the order of the modules
 
+    // ========= MODULES ==========
     "modules-left": [
-      "custom/chatgpt",
-      "custom/colloscope"
+      "custom/menu",
+      "group/proton",
+      "hyprland/workspaces",
     ],
 
     "modules-center": [
-      "hyprland/workspaces",
+      "clock",
     ],
 
     "modules-right": [
@@ -25,11 +26,10 @@
       "sway/language", 
       "battery", 
       "battery#bat2", 
-      "clock", 
       "tray"
     ],
 
-    // Modules configuration
+    // ========== MODULES CONFIG ==========
     "hyprland/workspaces": {
         "disable-scroll": true,
         "all-outputs": true,
@@ -104,21 +104,42 @@
     "idle_inhibitor": {
         "format": "{icon}",
         "format-icons": {
-            "activated": "",
-            "deactivated": ""
-        }
+            "activated": " ",
+            "deactivated": " "
+        },
+        "on-click-right": "hyprlock"
     },
     "tray": {
         // "icon-size": 21,
         "spacing": 10
     },
-    "clock": {
-        // "timezone": "America/New_York",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format-alt": "{:%Y-%m-%d}"
+   "clock": {
+     "format": "  {:%H:%M}",
+     "format-alt": "{:%A, %B %d, %Y (%R)}  ",
+     "tooltip-format": "<tt><small>{calendar}</small></tt>",
+     "calendar": {
+       "mode"          : "year",
+       "mode-mon-col"  : 3,
+       "weeks-pos"     : "right",
+       "on-scroll"     : 1,
+       "format": {
+         "months":     "<span color='#ffead3'><b>{}</b></span>",
+         "days":       "<span color='#ecc6d9'><b>{}</b></span>",
+         "weeks":      "<span color='#99ffdd'><b>W{}</b></span>",
+         "weekdays":   "<span color='#ffcc66'><b>{}</b></span>",
+         "today":      "<span color='#ff6699'><b><u>{}</u></b></span>"
+       }
+     },
+     "actions": {
+        "on-click-right": "mode",
+        "on-click-forward": "tz_up",
+        "on-click-backward": "tz_down",
+        "on-scroll-up": "shift_up",
+        "on-scroll-down": "shift_down"
+      }
     },
     "cpu": {
-        "format": "{usage}% ",
+        "format": "  {usage}%",
         "tooltip": false
     },
     "memory": {
@@ -134,7 +155,7 @@
     },
     "backlight": {
         // "device": "acpi_video1",
-        "format": "{percent}% {icon}",
+        "format": "{icon} {percent}%",
         "format-icons": ["", "", "", "", "", "", "", "", ""]
     },
     "battery": {
@@ -143,45 +164,47 @@
             "warning": 25,
             "critical": 15
         },
-        "format": "{capacity}% {icon}",
-        "format-charging": "{capacity}% ",
-        "format-plugged": "{capacity}% ",
+        "format": "{icon} {capacity}%",
+        "format-charging": " {capacity}%",
+        "format-plugged": "  {capacity}%",
         "format-alt": "{time} {icon}",
         // "format-good": "", // An empty format will hide the module
         // "format-full": "",
-        "format-icons": ["", "", "", "", ""]
+        "format-icons": [" ", " ", " ", " ", " "]
     },
     "battery#bat2": {
         "bat": "BAT2"
     },
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": "{essid} ({signalStrength}%) ",
+        "format-wifi": "  {essid} ({signalStrength}%)",
         "format-ethernet": "{ipaddr}/{cidr} ",
         "tooltip-format": "{ifname} via {gwaddr} ",
         "format-linked": "{ifname} (No IP) ",
-        "format-disconnected": "Disconnected ⚠",
+        "format-disconnected": "⚠ No Internet",
         "format-alt": "{ifname}: {ipaddr}/{cidr}"
     },
     "pulseaudio": {
         // "scroll-step": 1, // %, can be a float
-        "format": "{volume}% {icon} {format_source}",
-        "format-bluetooth": "{volume}% {icon} {format_source}",
-        "format-bluetooth-muted": " {icon} {format_source}",
-        "format-muted": " {format_source}",
-        "format-source": "{volume}% ",
-        "format-source-muted": "",
+        "format": "{icon} {volume}%",
+        "format-bluetooth": " {volume}%",
+        "format-bluetooth-muted": "  {icon}",
+        "format-muted": "  {format_source}",
+        // "format-source": " {volume}%",
+        // "format-source-muted": " ",
         "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "headset": "",
+            "headphone": " ",
+            "hands-free": " ",
+            "headset": " ",
             "phone": "",
             "portable": "",
-            "car": "",
-            "default": ["", "", ""]
+            "car": " ",
+            "default": ["", " ", " "]
         },
         "on-click": "pavucontrol"
     },
+
+    // ========== CUSTOM MODULES ==========
     "custom/media": {
         "format": "{icon} {}",
         "return-type": "json",
@@ -195,16 +218,31 @@
         "exec": "$HOME/dotfiles/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
     },
 
-    "custom/chatgpt": {
-      "format": "",
-      "on-click": "brave --app=https://chat.openai.com",
+    "custom/menu": {
+      "format": " ",
+      "on-click": "rofi -show drun",
       "tooltip": false
     },
 
-    "custom/colloscope": {
-      "format": "",
-      "on-click": "brave --app=https://rblld.fr/mp2i-hoche/docs/23-24/colles/colloscope-s2_v2.1.pdf",
+    "custom/mail": {
+      "format": " ",
+      "on-click": "brave --app=https://mail.proton.me/u/0/inbox",
       "tooltip": false
-    }
+    },
+
+    "custom/drive": {
+      "format": " ",
+      "on-click": "brave --app=https://drive.proton.me/u/0/Xi5X0_lqR0A6AzyVpPlf8paHnxdu3udeh7oGjBYrjcsl7s71D4bjWsouanztXVAd1R3NJm2kFMoRdsgi8yNInA==/folder/suzqyiKjBkesuMIJmUFLx4h_GAVIKKLC7Ox3D4GhJtnBLSbTRlgqAzBFBG0GPE6L40UmlcmprOBHWuXejW9RNQ==",
+      "tooltip": false
+    },
+
+    // ========== GROUPS ========== 
+    "group/proton": {
+      "orientation": "horizontal",
+      "modules": [
+        "custom/mail",
+        "custom/drive"
+      ]
+    },
 }
 
