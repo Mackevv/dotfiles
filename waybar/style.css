@@ -54,6 +54,7 @@ tooltip label {
 #temperature,
 #custom-menu,
 #proton,
+#custom-bluelight,
 #workspaces {
   color: @main-fg;
   background-color: @bar-bg;
