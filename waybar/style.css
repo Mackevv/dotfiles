@@ -4,12 +4,12 @@
   font-family: "JetBrainsMono Nerd Font", Helvetica, Arial, sans-serif;
   font-size: 14px;
   min-height: 10px;
-} 
+}
 
 @import "themes/Tokyo-Night.css";
 
 window#waybar {
-  background: transparent;
+  background: @bar-bg;
 }
 
 tooltip {
@@ -57,10 +57,10 @@ tooltip label {
 #custom-bluelight,
 #workspaces {
   color: @main-fg;
-  background-color: @bar-bg;
   border-radius: 10px;
   opacity: 1;
-  margin: 10px 5px 2px 5px;
+  margin-top: 2px;
+  margin-bottom: 2px;
   padding: 5px 10px 5px 10px;
 }
 
@@ -77,13 +77,13 @@ tooltip label {
 }
 
 #battery.charging {
-  color: #9ECE6A;
+  color: #9ece6a;
 }
 
 #battery.warning:not(.charging) {
-  color: #E0AF68;
+  color: #e0af68;
 }
 
 #battery.critical:not(.charging) {
-  color: #F7768E;
+  color: #f7768e;
 }
