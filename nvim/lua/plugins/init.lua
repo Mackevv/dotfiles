@@ -1,3 +1,18 @@
+-- Track toggle states
+local inlay_hints_enabled = true
+local diagnostics_virtual_text_enabled = true
+
+-- Toggle inlay hints
+local function toggle_inlay_hints()
+  inlay_hints_enabled = not inlay_hints_enabled
+  for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.lsp.inlay_hint then
+      vim.lsp.inlay_hint.enable(bufnr, inlay_hints_enabled)
+    end
+  end
+  vim.notify("Inlay hints " .. (inlay_hints_enabled and "enabled" or "disabled"))
+end
+
 return {
   {
     "stevearc/conform.nvim",
@@ -126,7 +141,7 @@ return {
     },
   },
 
-  ---- Rust ----
+  -- Rust ----
   {
     "mrcjkb/rustaceanvim",
     version = "^6",
@@ -141,8 +156,25 @@ return {
   {
     "rust-lang/rust.vim",
     ft = "rust",
-    init = function ()
+    init = function()
       vim.g.rustfmt_autosave = 1
+    end
+  },
+
+  {
+    'saecki/crates.nvim',
+    ft = { "toml" },
+    config = function()
+      require("crates").setup {
+        completion = {
+          cmp = {
+            enabled = true
+          },
+        },
+      }
+      require('cmp').setup.buffer({
+        sources = { { name = "crates" } }
+      })
     end
   },
 }
