@@ -1,18 +1,3 @@
--- Track toggle states
-local inlay_hints_enabled = true
-local diagnostics_virtual_text_enabled = true
-
--- Toggle inlay hints
-local function toggle_inlay_hints()
-  inlay_hints_enabled = not inlay_hints_enabled
-  for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
-    if vim.lsp.inlay_hint then
-      vim.lsp.inlay_hint.enable(bufnr, inlay_hints_enabled)
-    end
-  end
-  vim.notify("Inlay hints " .. (inlay_hints_enabled and "enabled" or "disabled"))
-end
-
 return {
   {
     "stevearc/conform.nvim",
@@ -43,6 +28,35 @@ return {
   },
 
   {
+    -- modified from: ~/.local/share/nvim/lazy/NvChad/lua/nvchad
+    "windwp/nvim-autopairs",
+    opts = {
+      fast_wrap = {},
+      disable_filetype = { "TelescopePrompt", "vim" },
+    },
+    config = function(_, opts)
+      -- from nvchad
+      require("nvim-autopairs").setup(opts)
+
+      -- custom start
+      local autopairs = require "nvim-autopairs"
+      local rule = require "nvim-autopairs.rule"
+
+      autopairs.add_rules {
+        rule("\\(", "\\)", "tex"),
+        rule("$", "$", { "tex", "markdown", "typst" }),
+        rule("\\[", "\\]", "tex"),
+        rule("\\{", "\\}", "tex"),
+      }
+      -- custom end
+
+      -- setup cmp for autopairs
+      local cmp_autopairs = require "nvim-autopairs.completion.cmp"
+      require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done())
+    end,
+  },
+
+  {
     "quarto-dev/quarto-nvim",
     dependencies = {
       "jmbuhr/otter.nvim",
@@ -50,31 +64,7 @@ return {
     },
     lazy = false,
     config = function()
-      local quarto = require("quarto")
-
-      quarto.setup({
-        debug = false,
-        closepreviewonexit = true,
-        lspfeatures = {
-          enabled = true,
-          chunks = "curly",
-          languages = { "r", "python", "julia", "bash", "html" },
-          diagnostics = {
-            enabled = true,
-            triggers = { "bufwritepost" },
-          },
-          completion = {
-            enabled = true,
-          },
-        },
-        coderunner = {
-          enabled = true,
-          default_method = "slime", -- "molten", "slime", "iron" or <function>
-          ft_runners = {},          -- filetype to runner, ie. `{ python = "molten" }`.
-          -- takes precedence over `default_method`
-          never_run = { "yaml" },   -- filetypes which are never sent to a code runner
-        },
-      })
+      require("configs.quarto")
     end,
   },
 
@@ -82,54 +72,8 @@ return {
     "hkupty/iron.nvim",
     lazy = false,
     config = function()
-      local iron = require("iron.core")
-
-      iron.setup({
-        config = {
-          -- Whether a repl should be discarded or not
-          scratch_repl = true,
-          -- Your repl definitions come here
-          repl_definition = {
-            sh = {
-              -- Can be a table or a function that
-              -- returns a table (see below)
-              command = { "zsh" },
-            },
-          },
-          -- How the repl window will be displayed
-          -- See below for more information
-          repl_open_cmd = require("iron.view").bottom(40),
-        },
-        -- Iron doesn't set keymaps by default anymore.
-        -- You can set them here or manually add keymaps to the functions in iron.core
-        keymaps = {
-          send_motion = "<space>sc",
-          visual_send = "<space>sc",
-          send_file = "<space>sf",
-          send_line = "<space>sl",
-          send_mark = "<space>sm",
-          mark_motion = "<space>mc",
-          mark_visual = "<space>mc",
-          remove_mark = "<space>md",
-          cr = "<space>s<cr>",
-          interrupt = "<space>s<space>",
-          exit = "<space>sq",
-          clear = "<space>cl",
-        },
-        -- If the highlight is on, you can change how it looks
-        -- For the available options, check nvim_set_hl
-        highlight = {
-          italic = true,
-        },
-        ignore_blank_lines = true, -- ignore blank lines when sending visual select lines
-      })
-
-      -- iron also has a list of commands, see :h iron-commands for all available commands
-      vim.keymap.set("n", "<space>rs", "<cmd>IronRepl<cr>")
-      vim.keymap.set("n", "<space>rr", "<cmd>IronRestart<cr>")
-      vim.keymap.set("n", "<space>rf", "<cmd>IronFocus<cr>")
-      vim.keymap.set("n", "<space>rh", "<cmd>IronHide<cr>")
-    end,
+      require("configs.iron")
+    end
   },
 
   {
@@ -137,6 +81,7 @@ return {
     opts = {
       ensure_installed = {
         "rust-analyzer",
+        "tinymist"
       },
     },
   },
