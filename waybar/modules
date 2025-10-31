@@ -216,7 +216,7 @@
 
     "custom/bluelight": {
       "format": "  ",
-      "on-click": "hyprshade toggle blue-light-filter",
+      "on-click": "hyprsunset --temperature 2500 | killall hyprsunset",
       "tooltip": false
     },
 

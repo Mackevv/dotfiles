@@ -42,7 +42,7 @@ mainbox {
     orientation:                  horizontal;
     spacing:                      0px;
     background-color:             transparent;
-    background-image:             url("~/dotfiles/wallpapers/stone-ocean-wallpaper1.jpg", height);
+    background-image:             url("~/dotfiles/wallpapers/dbs-wallpaper1.jpeg", height);
     children:                     ["inputbar","listbox"];
 }
 
